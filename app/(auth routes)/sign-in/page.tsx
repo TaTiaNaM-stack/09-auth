@@ -1,12 +1,40 @@
 'use client';
 
-import error from "@/app/(private routes)/notes/filter/[...slug]/error";
-import css from "./SignUp.module.css";
+import css from "./SignInPage.module.css";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { login, LoginRequest } from '@/lib/api/clientApi';
+import { ApiError } from '@/app/api/api'
+import { useAuthStore } from '@/lib/store/authStore';
 
 export default function SignUp() {
+    const router = useRouter();
+    const [error, setError] = useState('');
+    const setUser = useAuthStore((state) => state.setUser);
+
+    const handleSubmit = async (formData: FormData) => {
+        try {            
+            const formValues = Object.fromEntries(formData) as LoginRequest;
+            const res = await login(formValues);
+            if (res) {
+                setUser(res);
+                router.push('/profile');
+            } else {
+                setError('Invalid email or password');
+            }
+        } catch (error) {
+            setError(
+                // (error as ApiError).response?.data?.error ??
+                (error as ApiError).errorMessage ??
+                'Oops... some error'
+            )
+        }
+
+    };
+
     return (
         <main className={css.mainContent}>
-        <form className={css.form}>
+        <form className={css.form} action={handleSubmit}>
             <h1 className={css.formTitle}>Sign in</h1>
 
             <div className={css.formGroup}>
@@ -25,7 +53,7 @@ export default function SignUp() {
                 </button>
             </div>
 
-            <p className={css.error}>{error}</p>
+            {error && <p className={css.error}>{error}</p>}
         </form>
         </main>
     );

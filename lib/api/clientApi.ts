@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type { CreateNoteData, Note, FetchNotesResponse } from '@/types/note';
+import type { User } from '@/types/user';
 
 const NEXT_PUBLIC_NOTEHUB_TOKEN = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 
@@ -33,30 +34,46 @@ export const deleteNote = async (id: string): Promise<Note> => {
     return response.data;
 }
 
-export const register = async (email: string, password: string): Promise<void> => {
-    await axios.post('/auth/register', { email, password });
+export type RegisterRequest = {
+  email: string;
+  password: string;
+  userName: string;
+};
+
+export const register = async (data: RegisterRequest) => {
+    const response = await axios.post<User>('/auth/register', data);
+    return response.data;
 }
 
-export const login = async (email: string, password: string): Promise<string> => {
-    const response = await axios.post<{ token: string }>('/auth/login', { email, password });
-    return response.data.token;
+export type LoginRequest = {
+  email: string;
+  password: string;
+};
+
+export const login = async (data: LoginRequest) => {
+    const response = await axios.post<User>('/auth/login', data);
+    return response.data;
 }
 
 export const logout = async (): Promise<void> => {
     await axios.post('/auth/logout');
 }
 
-export const checkSession = async (): Promise<boolean> => {
+type CheckSessionRequest = {
+  success: boolean;
+};
+
+export const checkSession = async () => {
     try {
-        await axios.get('/auth/session');
-        return true;
+        const response = await axios.get<CheckSessionRequest>('/auth/session');
+        return response.data.success;
     } catch (error) {
         return false;
     }
 }
 
-export const getMe = async (): Promise<{ email: string; username: string; avatarUrl: string }> => {
-    const response = await axios.get('/auth/me');
+export const getMe = async () => {
+    const response = await axios.get<User>('/auth/me');
     return response.data;
 }
 
