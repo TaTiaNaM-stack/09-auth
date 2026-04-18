@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 
 export type APIError = AxiosError<{error: string}>;
 
-export const api = axios.create({
+export const nextServer = axios.create({
     baseURL: process.env.NEXT_PUBLIC_NOTEHUB_URL || 'https://notehub-api.goit.study',
     withCredentials: true,
     headers: {

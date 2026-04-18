@@ -12,10 +12,8 @@ export default function PublicLayout({ children }: Props) {
   const router = useRouter();
 
   useEffect(() => {
-    // 1. Примусово оновлюємо серверні дані
     router.refresh();
 
-    // 2. Безпечно оновлюємо стан loading
     startTransition(() => {
       setLoading(false);
     });
