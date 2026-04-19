@@ -2,13 +2,26 @@ import axios, { AxiosError } from 'axios';
 
 export type APIError = AxiosError<{error: string}>;
 
+const baseURL = process.env.NEXT_PUBLIC_API_URL + '/api';
+
 export const nextServer = axios.create({
     baseURL: process.env.NEXT_PUBLIC_NOTEHUB_URL || 'https://notehub-api.goit.study',
     withCredentials: true,
     headers: {
-        // 'Authorization': `Bearer ${NEXT_PUBLIC_NOTEHUB_TOKEN}`
+        'Authorization': `Bearer ${NEXT_PUBLIC_NOTEHUB_TOKEN}`
     }
 });
+
+
+
+
+
+
+
+
+
+
+
 
 
 // import type { CreateNoteData, Note, FetchNotesResponse } from '@/types/note';

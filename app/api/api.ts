@@ -8,7 +8,7 @@ export const api = axios.create({
 export class ApiError extends Error {
   statusCode: number;
   errorMessage: string;
-  // response?: data;
+  response?: { error: string };
 
   constructor(statusCode: number, errorMessage: string) {
     super(`API Error: ${statusCode} - ${errorMessage}`);
