@@ -5,7 +5,7 @@ export type APIError = AxiosError<{error: string}>;
 const baseURL = process.env.NEXT_PUBLIC_API_URL + '/api';
 
 export const nextServer = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_NOTEHUB_URL || 'https://notehub-api.goit.study',
+    baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://notehub-api.goit.study',
     withCredentials: true,
     headers: {
         'Authorization': `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`
