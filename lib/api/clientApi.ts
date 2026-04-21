@@ -9,7 +9,7 @@ nextServer.defaults.baseURL = 'https://notehub-api.goit.study';
 nextServer.defaults.headers.common['Authorization'] = `Bearer ${NEXT_PUBLIC_NOTEHUB_TOKEN}`;
 
 export const fetchNotes = async (searchQuery: string, currentPage: number, tag: string): Promise<FetchNotesResponse> => {
-    const response = await axios.get<FetchNotesResponse>('/notes', {
+    const response = await nextServer.get<FetchNotesResponse>('/notes', {
       params: {
         page: currentPage,
         perPage: 12,
@@ -21,28 +21,28 @@ export const fetchNotes = async (searchQuery: string, currentPage: number, tag: 
 }
 
 export const fetchNoteById = async (id: string): Promise<Note> => {
-    const response = await axios.get<Note>(`/notes/${id}`);
+    const response = await nextServer.get<Note>(`/notes/${id}`);
     return response.data;
 }
 
 export const createNote = async (newTodo: CreateNoteData): Promise<Note> => {
-    const response = await axios.post<Note>('/notes', newTodo);
+    const response = await nextServer.post<Note>('/notes', newTodo);
     return response.data;
 }
 
 export const deleteNote = async (id: string): Promise<Note> => {
-    const response = await axios.delete<Note>(`/notes/${id}`);
+    const response = await nextServer.delete<Note>(`/notes/${id}`);
     return response.data;
 }
 
 export type RegisterRequest = {
   email: string;
   password: string;
-  userName: string;
+//   userName: string;
 };
 
 export const register = async (data: RegisterRequest) => {
-    const response = await axios.post<User>('/auth/register', data);
+    const response = await nextServer.post<User>('/auth/register', data);
     return response.data;
 }
 
@@ -52,12 +52,12 @@ export type LoginRequest = {
 };
 
 export const login = async (data: LoginRequest) => {
-    const response = await axios.post<User>('/auth/login', data);
+    const response = await nextServer.post<User>('/auth/login', data);
     return response.data;
 }
 
 export const logout = async (): Promise<void> => {
-    await axios.post('/auth/logout');
+    await nextServer.post('/auth/logout');
 }
 
 type CheckSessionRequest = {
@@ -66,7 +66,7 @@ type CheckSessionRequest = {
 
 export const checkSession = async () => {
     try {
-        const response = await axios.get<CheckSessionRequest>('/auth/session');
+        const response = await nextServer.get<CheckSessionRequest>('/auth/session');
         return response.data.success;
     } catch (error) {
         return false;
@@ -74,10 +74,10 @@ export const checkSession = async () => {
 }
 
 export const getMe = async () => {
-    const response = await axios.get<User>('/auth/me');
+    const response = await nextServer.get<User>('/auth/me');
     return response.data;
 }
 
 export const updateMe = async (email: string, username: string, avatarUrl: string): Promise<void> => {
-    await axios.put('/auth/me', { email, username, avatarUrl });
+    await nextServer.put('/auth/me', { email, username, avatarUrl });
 }

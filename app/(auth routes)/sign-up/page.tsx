@@ -18,18 +18,32 @@ export default function SignUp() {
             const formValues = Object.fromEntries(formData) as RegisterRequest;
             const res = await register(formValues);
              if (res) {
+                setUser(res);
         router.push('/profile');
       } else {
         setError('Invalid email or password');
       }
+        
     } catch (error) {
       setError(
         // (error as ApiError).response?.data?.error ??
         //   (error as ApiError).errorMessage ??
           'Oops... some error'
       )
-    }        
-    };
+    }    
+    
+    // const email = formData.get('email') as string;
+    // const password = formData.get('password') as string;
+
+    // await register ({ email, password } as RegisterRequest);
+
+    // } catch (error) {
+      // setError(
+      //   (error as ApiError).response?.data?.error ??
+      //   (error as ApiError).errorMessage ??
+      //     'Oops... some error'
+      // )
+    }
 
     return (
         <main className={css.mainContent}>
@@ -56,3 +70,4 @@ export default function SignUp() {
         </main>
     );
 }
+// }
