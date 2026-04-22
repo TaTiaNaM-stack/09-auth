@@ -1,12 +1,7 @@
 import axios from 'axios';
 import type { CreateNoteData, Note, FetchNotesResponse } from '@/types/note';
 import type { User } from '@/types/user';
-import { nextServer } from './api'
-
-const NEXT_PUBLIC_NOTEHUB_TOKEN = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
-
-nextServer.defaults.baseURL = 'https://notehub-api.goit.study';
-nextServer.defaults.headers.common['Authorization'] = `Bearer ${NEXT_PUBLIC_NOTEHUB_TOKEN}`;
+import { nextServer } from './api';
 
 export const fetchNotes = async (searchQuery: string, currentPage: number, tag: string): Promise<FetchNotesResponse> => {
     const response = await nextServer.get<FetchNotesResponse>('/notes', {
@@ -44,6 +39,7 @@ export type RegisterRequest = {
 export const register = async (data: RegisterRequest) => {
     const response = await nextServer.post<User>('/auth/register', data);
     return response.data;
+    console.log(response.data);
 }
 
 export type LoginRequest = {
@@ -73,11 +69,11 @@ export const checkSession = async () => {
     }
 }
 
-export const getMe = async () => {
-    const response = await nextServer.get<User>('/auth/me');
+export const getMe = async (): Promise<User> => {
+    const response = await nextServer.get<User>('/users/me');
     return response.data;
 }
 
 export const updateMe = async (email: string, username: string, avatarUrl: string): Promise<void> => {
-    await nextServer.put('/auth/me', { email, username, avatarUrl });
+    await nextServer.patch('/users/me', { email, username, avatarUrl });
 }

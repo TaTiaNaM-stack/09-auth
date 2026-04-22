@@ -3,10 +3,19 @@ import { cookies } from 'next/headers';
 import { nextServer } from './api';
 import type { Note, FetchNotesResponse } from '@/types/note';
 
-const NEXT_PUBLIC_NOTEHUB_TOKEN = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
+// const NEXT_PUBLIC_NOTEHUB_TOKEN = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 
-axios.defaults.baseURL = 'https://notehub-api.goit.study';
-axios.defaults.headers.common['Authorization'] = `Bearer ${NEXT_PUBLIC_NOTEHUB_TOKEN}`;
+// axios.defaults.baseURL = 'https://notehub-api.goit.study';
+// axios.defaults.headers.common['Authorization'] = `Bearer ${NEXT_PUBLIC_NOTEHUB_TOKEN}`;
+
+// export const nextServer = axios.create({
+//     baseURL: baseURL,
+//     withCredentials: true,
+//     headers: {
+//         accessToken: cookies().get('accessToken')?.value || '',
+//         refreshToken: cookies().get('refreshToken')?.value || '',
+//     },
+// });
 
 export const fetchNotes = async (searchQuery: string, currentPage: number, tag: string): Promise<FetchNotesResponse> => {
     const response = await axios.get<FetchNotesResponse>('/notes', {
@@ -34,8 +43,8 @@ export const checkSession = async (): Promise<boolean> => {
     }
 }
 
-export const getMe = async (): Promise<{ email: string; username: string; avatarUrl: string }> => {
-    const response = await axios.get('/auth/me');
+export const getMe = async (): Promise<{ email: string; username: string; avatar: string }> => {
+    const response = await nextServer.get('/users/me');
     return response.data;
 }
 

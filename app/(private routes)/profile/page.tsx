@@ -1,5 +1,7 @@
 import css from './ProfilePage.module.css'; 
 import { Metadata } from 'next';
+import type { User } from '@/types/user';
+import { getMe } from '@/lib/api/clientApi';
 
 export const metadata: Metadata = {
   title: 'Profile',
@@ -19,7 +21,12 @@ export const metadata: Metadata = {
     },
 };
 
-const Profile = () => {
+interface ProfileProps  {
+  user: User;
+}
+
+const Profile = async ({ user }: ProfileProps) => {
+  const { email, username, avatar } = await getMe();
     return (
         <main className={css.mainContent}>
           <div className={css.profileCard}>
@@ -31,7 +38,7 @@ const Profile = () => {
             </div>
             <div className={css.avatarWrapper}>
               <img
-                src="Avatar"
+                src={avatar}
                 alt="User Avatar"
                 width={120}
                 height={120}
@@ -40,10 +47,10 @@ const Profile = () => {
             </div>
             <div className={css.profileInfo}>
               <p>
-                Username: your_username
+                Username: {username}
               </p>
               <p>
-                Email: your_email@example.com
+                Email: {email}
               </p>
             </div>
           </div>
