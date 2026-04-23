@@ -21,10 +21,6 @@ export const metadata: Metadata = {
     },
 };
 
-// interface ProfileProps  {
-//   user: User;
-// }
-
 const Profile = async () => {
   const user = await getMe();
     return (

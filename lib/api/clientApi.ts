@@ -74,6 +74,7 @@ export const getMe = async (): Promise<User> => {
     return response.data;
 }
 
-export const updateMe = async (email: string, username: string, avatarUrl: string): Promise<void> => {
-    await nextServer.patch('/users/me', { email, username, avatarUrl });
+export const updateMe = async (username: string): Promise<User> => {
+    const response = await nextServer.patch<User>('/users/me', { username });
+    return response.data;
 }
