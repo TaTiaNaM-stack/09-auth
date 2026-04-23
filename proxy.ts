@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { parse } from 'cookie';
-import { checkServerSession } from './lib/api/serverApi';
+import { checkSession } from './lib/api/serverApi';
+import {api} from './app/api/api';
 
 const privateRoutes = ['/profile'];
 const publicRoutes = ['/sign-in', '/sign-up'];
 
 export async function proxy(request: NextRequest) {
   const cookieStore = await cookies()
-  const accessToken = cookieStore.get('accessToken')?.value
-  const refreshToken = cookieStore.get('refreshToken')?.value
+  const accessToken = cookieStore.get('accessToken')?.value;
+  const refreshToken = cookieStore.get('refreshToken')?.value;
 
    const { pathname } = request.nextUrl
   
@@ -18,8 +19,14 @@ export async function proxy(request: NextRequest) {
 
     if (!accessToken) {
       if (refreshToken) {
-        const data = await checkServerSession();
-        const setCookie = data.headers['set-cookie'];
+        // const data = await checkSession();
+        // const setCookie = data.headers['set-cookie'];
+        const { headers } = await api.get('/auth/session', {
+          headers: {
+            Cookie: cookieStore.toString(),
+          },
+        });
+        const setCookie = headers['set-cookie'];
 
         if (setCookie) {
           const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];

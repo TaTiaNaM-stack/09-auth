@@ -24,6 +24,8 @@
   padding: 0;
   display: flex;
   gap: 1rem;
+    display: flex;
+  align-items: center;
 }
 
 .navigationItem {

@@ -25,7 +25,7 @@ export default function SignUp() {
         } catch (error) {
             setError(
                 // (error as ApiError).response?.data?.error ??
-                (error as ApiError).errorMessage ??
+                // (error as ApiError).errorMessage ??
                 'Oops... some error'
             )
         }

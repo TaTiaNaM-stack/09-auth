@@ -5,14 +5,14 @@ import { nextServer } from './api';
 
 export const fetchNotes = async (searchQuery: string, currentPage: number, tag: string): Promise<FetchNotesResponse> => {
     const response = await nextServer.get<FetchNotesResponse>('/notes', {
-      params: {
-        page: currentPage,
-        perPage: 12,
-        ...(searchQuery && { search: searchQuery }),
-        ...(tag && tag !== "all" && { tag }),
-      },
-    }); 
-      return response.data;
+        params: {
+            page: currentPage,
+            perPage: 12,
+            ...(searchQuery && { search: searchQuery }),
+            ...(tag && tag !== "all" && { tag }),
+        },
+    });
+    return response.data;
 }
 
 export const fetchNoteById = async (id: string): Promise<Note> => {
@@ -31,9 +31,9 @@ export const deleteNote = async (id: string): Promise<Note> => {
 }
 
 export type RegisterRequest = {
-  email: string;
-  password: string;
-//   userName: string;
+    email: string;
+    password: string;
+    //   userName: string;
 };
 
 export const register = async (data: RegisterRequest) => {
@@ -43,8 +43,8 @@ export const register = async (data: RegisterRequest) => {
 }
 
 export type LoginRequest = {
-  email: string;
-  password: string;
+    email: string;
+    password: string;
 };
 
 export const login = async (data: LoginRequest) => {
@@ -57,7 +57,7 @@ export const logout = async (): Promise<void> => {
 }
 
 type CheckSessionRequest = {
-  success: boolean;
+    success: boolean;
 };
 
 export const checkSession = async () => {
