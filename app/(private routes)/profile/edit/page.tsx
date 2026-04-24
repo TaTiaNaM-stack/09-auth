@@ -1,17 +1,18 @@
 'use client';
 
 import css from "./EditProfilePage.module.css";
-import { updateMe } from "@/lib/api/clientApi";
+import { getMe, updateMe } from "@/lib/api/clientApi";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Image from 'next/image';
 import { User } from "@/types/user";
 
-interface ProfileProps  {
-  user: User;
-}
+// interface ProfileProps  {
+//   user: User;
+// }
 
-export default function EditProfilePage({ user }: ProfileProps) {
+export default function EditProfilePage({ user }: { user: User }) {
+  getMe(user);
     const [username, setUsername] = useState(user.username);
     const router = useRouter();
 
