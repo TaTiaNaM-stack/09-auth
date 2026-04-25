@@ -3,7 +3,7 @@
 import css from "./EditProfilePage.module.css";
 import { getMe, updateMe } from "@/lib/api/clientApi";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from 'next/image';
 import { User } from "@/types/user";
 
@@ -11,56 +11,64 @@ import { User } from "@/types/user";
 //   user: User;
 // }
 
-export default function EditProfilePage({ user }: { user: User }) {
-  getMe(user);
-    const [username, setUsername] = useState(user.username);
-    const router = useRouter();
+export default function EditProfilePage() {
+  const [username, setUsername] = useState('');
+  const router = useRouter();
+  const [user, setUser] = useState<User>({ email: '', username: '', avatar: '' });
 
-    const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        await updateMe(username);
-        router.push('/profile');
-    };
-    const handleCancel = () => {
-      router.push('/profile');
-    }
+  useEffect(() => {
+    getMe().then((user) => {
+      setUsername(user.username ?? '');
+      setUser(user);
+    });
+  }, [ username]);
 
-    return (
-      <main className={css.mainContent}>
-        <div className={css.profileCard}>
-          <h1 className={css.formTitle}>Edit Profile</h1>
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(event.target.value);
+  };
 
-          <Image
-            src={user.avatar}
-            alt="User Avatar"
-            width={120}
-            height={120}
-            className={css.avatar}
-          />
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await updateMe(username);
+    router.push('/profile');
+  };
 
-          <form className={css.profileInfo} onSubmit={handleSubmit}>
-            <div className={css.usernameWrapper}>
-              <label htmlFor="username">Username:</label>
-              <input id="username"
-                type="text"
-                className={css.input}
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </div>
+  return (
+    <main className={css.mainContent}>
+      <div className={css.profileCard}>
+        <h1 className={css.formTitle}>Edit Profile</h1>
 
-            <p>Email: {user.email}</p>
-            
-            <div className={css.actions}>
-              <button type="submit" className={css.saveButton} >
-                Save
-              </button>
-              <button type="button" className={css.cancelButton} onClick={handleCancel}>
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
-      </main>
-    );  
+        <Image
+          src={user.avatar}
+          alt="User Avatar"
+          width={120}
+          height={120}
+          className={css.avatar}
+        />
+
+        <form className={css.profileInfo} onSubmit={handleSubmit}>
+          <div className={css.usernameWrapper}>
+            <label htmlFor="username">Username:</label>
+            <input id="username"
+              type="text"
+              className={css.input}
+              value={username}
+              onChange={handleChange}
+            />
+          </div>
+
+          <p>Email: {user.email}</p>
+
+          <div className={css.actions}>
+            <button type="submit" className={css.saveButton} >
+              Save
+            </button>
+            <button type="button" className={css.cancelButton} onClick={() => router.push('/profile')}>
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+  );
 }
