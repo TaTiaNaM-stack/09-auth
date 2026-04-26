@@ -4,7 +4,7 @@ import { parse } from 'cookie';
 import { checkSession } from './lib/api/serverApi';
 import {api} from './app/api/api';
 
-const privateRoutes = ['/profile'];
+const privateRoutes = ['/profile/notes/:path*'];
 const publicRoutes = ['/sign-in', '/sign-up'];
 
 export async function proxy(request: NextRequest) {
@@ -19,8 +19,8 @@ export async function proxy(request: NextRequest) {
 
     if (!accessToken) {
       if (refreshToken) {
-        // const data = await checkSession();
-        // const setCookie = data.headers['set-cookie'];
+        const data = await checkSession();
+
         const { headers } = await api.get('/auth/session', {
           headers: {
             Cookie: cookieStore.toString(),
@@ -72,6 +72,6 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/profile/:path*', '/sign-in', '/sign-up'],
+    matcher: ['/profile/notes/:path*', '/sign-in', '/sign-up'],
 };
 

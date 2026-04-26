@@ -3,7 +3,7 @@ import type { CreateNoteData, Note, FetchNotesResponse } from '@/types/note';
 import type { User } from '@/types/user';
 import { nextServer } from './api';
 
-export const fetchNotes = async (searchQuery: string, currentPage: number, tag: string): Promise<FetchNotesResponse> => {
+export const fetchNotes = async (searchQuery: string, tag: string, currentPage: number): Promise<FetchNotesResponse> => {
     const response = await nextServer.get<FetchNotesResponse>('/notes', {
         params: {
             page: currentPage,
@@ -36,10 +36,9 @@ export type RegisterRequest = {
     //   userName: string;
 };
 
-export const register = async (data: RegisterRequest) => {
+export const register = async (data: RegisterRequest): Promise<User> => {
     const response = await nextServer.post<User>('/auth/register', data);
     return response.data;
-    console.log(response.data);
 }
 
 export type LoginRequest = {
@@ -47,7 +46,7 @@ export type LoginRequest = {
     password: string;
 };
 
-export const login = async (data: LoginRequest) => {
+export const login = async (data: LoginRequest): Promise<User> => {
     const response = await nextServer.post<User>('/auth/login', data);
     return response.data;
 }
@@ -60,7 +59,7 @@ type CheckSessionRequest = {
     success: boolean;
 };
 
-export const checkSession = async () => {
+export const checkSession = async (): Promise<boolean> => {
     try {
         const response = await nextServer.get<CheckSessionRequest>('/auth/session');
         return response.data.success;
@@ -74,7 +73,7 @@ export const getMe = async (): Promise<User> => {
     return response.data;
 }
 
-export const updateMe = async (data: string): Promise<User> => {
+export const updateMe = async (data: { username: string }): Promise<User> => {
     const response = await nextServer.patch<User>('/users/me', data);
     return response.data;
 }

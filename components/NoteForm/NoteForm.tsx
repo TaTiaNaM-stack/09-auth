@@ -8,12 +8,13 @@ import { useNoteDraftStore } from '@/lib/store/noteStore';
 
 
 export default function NoteForm() {
+  const { draft, setDraft, clearDraft } = useNoteDraftStore();
   const queryClient = useQueryClient();
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setDraft({ ...draft, [name]: value });
   };
-  const { draft, setDraft, clearDraft } = useNoteDraftStore();
+  
   const { mutate } = useMutation({
     mutationFn: createNote,
     onSuccess: () => { 

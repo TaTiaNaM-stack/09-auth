@@ -19,8 +19,8 @@ export default function NotesClient({ tag }: Props) {
 	const [currentPage, setCurrentPage] = useState(1);
 
 	const { data: notes, isSuccess, error } = useQuery({
-		queryKey: ['notes', currentPage, searchQuery, tag],
-		queryFn: () => fetchNotes(searchQuery, currentPage, tag),
+		queryKey: ['notes', searchQuery, tag, currentPage],
+		queryFn: () => fetchNotes(searchQuery, tag, currentPage),
 		placeholderData: keepPreviousData,
 	});
 
@@ -34,7 +34,7 @@ export default function NotesClient({ tag }: Props) {
 		<header className={css.toolbar}>
 			<SearchBox searchQuery={searchQuery} onChange={debouncedSearch} />
 			{isSuccess
-				&& notes?.notes.length > 1
+				&& notes.totalPages > 1
 				&& <Pagination 
 					totalPages={notes.totalPages} 
 					currentPage={currentPage} 
@@ -47,6 +47,6 @@ export default function NotesClient({ tag }: Props) {
 			&& notes.notes.length > 0 
 			? <NoteList notes={notes.notes} /> 
 			: <p className={css.message}>No notes found</p>}
-		{error && <p className={css.message}>{error ? 'Error fetching notes' : 'No notes found'}</p>}
+		{error && <p className={css.message}>{error?.message}</p>}
 	</div>
   )}

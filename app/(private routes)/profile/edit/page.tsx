@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from 'next/image';
 import { User } from "@/types/user";
+import { useAuthStore } from "@/lib/store/authStore";
 
 // interface ProfileProps  {
 //   user: User;
@@ -23,13 +24,17 @@ export default function EditProfilePage() {
     });
   }, []);
 
+ const setUserFromStore = useAuthStore((state) => state.setUser);
+
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
   };
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await updateMe(username);
+    await updateMe({ username });
+      setUserFromStore({ ...user!, username });
     router.push('/profile');
   };
 
@@ -57,7 +62,7 @@ export default function EditProfilePage() {
             />
           </div>
 
-          <p>Email: user_email@example.com</p>
+          <p>Email: {user?.email}</p>
 
           <div className={css.actions}>
             <button type="submit" className={css.saveButton}>
