@@ -14,14 +14,14 @@ import { User } from "@/types/user";
 export default function EditProfilePage() {
   const [username, setUsername] = useState('');
   const router = useRouter();
-  const [user, setUser] = useState<User | null>({ email: '', username: '', avatar: '' });
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     getMe().then((user) => {
-      setUsername(user.username ?? '');
+      setUsername(user.username);
       setUser(user);
     });
-  }, [ username]);
+  }, []);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -39,7 +39,7 @@ export default function EditProfilePage() {
         <h1 className={css.formTitle}>Edit Profile</h1>
 
         <Image
-          src={user.avatar}
+          src={user?.avatar || '/default-avatar.png'}
           alt="User Avatar"
           width={120}
           height={120}
@@ -57,10 +57,10 @@ export default function EditProfilePage() {
             />
           </div>
 
-          <p>Email: {user.email}</p>
+          <p>Email: user_email@example.com</p>
 
           <div className={css.actions}>
-            <button type="submit" className={css.saveButton} >
+            <button type="submit" className={css.saveButton}>
               Save
             </button>
             <button type="button" className={css.cancelButton} onClick={() => router.push('/profile')}>

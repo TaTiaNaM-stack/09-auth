@@ -9,7 +9,6 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'ac.goit.global',
         port: '',
-        pathname: '/fullstack/react/notehub-og-meta.jpg',
       },
     ],
   },
