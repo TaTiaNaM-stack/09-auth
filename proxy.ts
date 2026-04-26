@@ -3,8 +3,9 @@ import { cookies } from 'next/headers';
 import { parse } from 'cookie';
 import { checkSession } from './lib/api/serverApi';
 import {api} from './app/api/api';
+import path from 'path/win32';
 
-const privateRoutes = ['/profile/notes/:path*'];
+const privateRoutes = ['/profile/notes/:path*', '/profile/:path*', '/notes/:path*', '/notes/filter/:path*'];
 const publicRoutes = ['/sign-in', '/sign-up'];
 
 export async function proxy(request: NextRequest) {
@@ -20,14 +21,7 @@ export async function proxy(request: NextRequest) {
     if (!accessToken) {
       if (refreshToken) {
         const data = await checkSession();
-
-        const { headers } = await api.get('/auth/session', {
-          headers: {
-            Cookie: cookieStore.toString(),
-          },
-        });
-        const setCookie = headers['set-cookie'];
-
+          const setCookie = data.setCookie;
         if (setCookie) {
           const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
           for (const cookieStr of cookieArray) {
