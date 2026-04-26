@@ -2,7 +2,7 @@
 
 import css from "./EditProfilePage.module.css";
 import { getMe, updateMe } from "@/lib/api/clientApi";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from 'next/image';
 import { User } from "@/types/user";
@@ -14,7 +14,7 @@ import { User } from "@/types/user";
 export default function EditProfilePage() {
   const [username, setUsername] = useState('');
   const router = useRouter();
-  const [user, setUser] = useState<User>({ email: '', username: '', avatar: '' });
+  const [user, setUser] = useState<User | null>({ email: '', username: '', avatar: '' });
 
   useEffect(() => {
     getMe().then((user) => {
