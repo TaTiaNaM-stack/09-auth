@@ -5,7 +5,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { register } from "@/lib/api/clientApi";
 import type { RegisterRequest } from "@/lib/api/clientApi";
-// import { ApiError } from "@/app/api/api";
 import { useAuthStore } from '@/lib/store/authStore';
 
 export default function SignUp() {
@@ -26,23 +25,9 @@ export default function SignUp() {
         
     } catch (error) {
       setError(
-        // (error as ApiError).response?.data?.error ??
-        //   (error as ApiError).errorMessage ??
           'Oops... some error'
       )
     }    
-    
-    // const email = formData.get('email') as string;
-    // const password = formData.get('password') as string;
-
-    // await register ({ email, password } as RegisterRequest);
-
-    // } catch (error) {
-      // setError(
-      //   (error as ApiError).response?.data?.error ??
-      //   (error as ApiError).errorMessage ??
-      //     'Oops... some error'
-      // )
     }
 
     return (
@@ -70,4 +55,3 @@ export default function SignUp() {
         </main>
     );
 }
-// }
