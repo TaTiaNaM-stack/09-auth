@@ -5,7 +5,7 @@ import { checkSession } from './lib/api/serverApi';
 import {api} from './app/api/api';
 import path from 'path/win32';
 
-const privateRoutes = ['/profile/notes/:path*', '/profile/:path*', '/notes/:path*', '/notes/filter/:path*'];
+const privateRoutes = ['/profile'];
 const publicRoutes = ['/sign-in', '/sign-up'];
 
 export async function proxy(request: NextRequest) {
@@ -66,6 +66,6 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/profile/notes/:path*', '/sign-in', '/sign-up'],
+    matcher: ['/profile/:path*', '/sign-in', '/sign-up'],
 };
 

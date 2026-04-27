@@ -8,10 +8,6 @@ import Image from 'next/image';
 import { User } from "@/types/user";
 import { useAuthStore } from "@/lib/store/authStore";
 
-// interface ProfileProps  {
-//   user: User;
-// }
-
 export default function EditProfilePage() {
   const [username, setUsername] = useState('');
   const router = useRouter();

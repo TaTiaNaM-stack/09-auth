@@ -33,11 +33,13 @@ export default function NoteForm() {
       const tag = formData.get('tag') as string;
     mutate({ title, content, tag } as CreateNoteData);
   };
+
   const router = useRouter();
   const handleCancel = () => {
     router.back();
   };
 
+  if (!draft) return null;
 
   return (
       <form className={css.form} action={handleSubmit}>
