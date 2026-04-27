@@ -1,4 +1,3 @@
-import axios from 'axios';
 import type { CreateNoteData, Note, FetchNotesResponse } from '@/types/note';
 import type { User } from '@/types/user';
 import { nextServer } from './api';
