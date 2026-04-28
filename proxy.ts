@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { parse } from 'cookie';
 import { checkSession } from './lib/api/serverApi';
 
-const privateRoutes = ['/profile/:path*'];
+const privateRoutes = ['/profile/:path*', '/notes/:path*'];
 const publicRoutes = ['/sign-in', '/sign-up'];
 
 export async function proxy(request: NextRequest) {
@@ -13,8 +13,8 @@ export async function proxy(request: NextRequest) {
 
    const { pathname } = request.nextUrl
   
-  const isPrivateRoute = privateRoutes.some((route) => pathname.startsWith(route));
-  const isPublicRoute = publicRoutes.some((route) => pathname.startsWith(route));
+  // const isPrivateRoute = privateRoutes.some((route) => pathname.startsWith(route));
+  // const isPublicRoute = publicRoutes.some((route) => pathname.startsWith(route));
 
     if (!accessToken) {
       if (refreshToken) {
@@ -32,14 +32,14 @@ export async function proxy(request: NextRequest) {
             if (parsed.accessToken) cookieStore.set('accessToken', parsed.accessToken, options);
             if (parsed.refreshToken) cookieStore.set('refreshToken', parsed.refreshToken, options);
           }
-           if (isPublicRoute) {
+           if (pathname === '/sign-in' || pathname === '/sign-up') {
           return NextResponse.redirect(new URL('/', request.url), {
             headers: {
               Cookie: cookieStore.toString(),
             },
           });
         }
-         if (isPrivateRoute) {
+         if (pathname === '/profile' || pathname === '/notes') {
           return NextResponse.next({
             headers: {
               Cookie: cookieStore.toString(),
@@ -48,22 +48,22 @@ export async function proxy(request: NextRequest) {
         }
       }
     }
-    if (isPublicRoute) {
+    if (pathname === '/sign-in' || pathname === '/sign-up') {
       return NextResponse.next();
     }
-    if (isPrivateRoute) {
+    if (pathname === '/profile') {
       return NextResponse.redirect(new URL('/sign-in', request.url));
     }
   }
-  if (isPublicRoute) {
+  if (pathname === '/sign-in' || pathname === '/sign-up') {
     return NextResponse.redirect(new URL('/', request.url));
   }
-   if (isPrivateRoute) {
+   if (pathname === '/profile' || pathname === '/notes') {
     return NextResponse.next();
   }
 }
 
 export const config = {
-    matcher: ['/profile/:path*', '/sign-in', '/sign-up'],
+    matcher: ['/profile/:path*', '/notes/:path*', '/sign-in', '/sign-up'],
 };
 
