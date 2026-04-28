@@ -43,10 +43,10 @@ export const getMe = async (): Promise<User> => {
 export const checkSession = async () => {
     const cookieStore = await cookies();
 
-        const {data} = await nextServer.get('/auth/session', {
+        const response = await nextServer.get('/auth/session', {
             headers: {
                 Cookie: cookieStore.toString(),
             },
         });
-        return data;
+        return response.data;
 };

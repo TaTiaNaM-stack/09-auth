@@ -2,10 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { parse } from 'cookie';
 import { checkSession } from './lib/api/serverApi';
-import {api} from './app/api/api';
-import path from 'path/win32';
 
-const privateRoutes = ['/profile'];
+const privateRoutes = ['/profile/:path*'];
 const publicRoutes = ['/sign-in', '/sign-up'];
 
 export async function proxy(request: NextRequest) {
