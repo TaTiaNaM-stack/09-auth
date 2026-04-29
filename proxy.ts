@@ -32,14 +32,14 @@ export async function proxy(request: NextRequest) {
             if (parsed.accessToken) cookieStore.set('accessToken', parsed.accessToken, options);
             if (parsed.refreshToken) cookieStore.set('refreshToken', parsed.refreshToken, options);
           }
-           if (pathname === '/sign-in' || pathname === '/sign-up') {
+           if (pathname.startsWith('/sign-in') || pathname.startsWith('/sign-up')) {
           return NextResponse.redirect(new URL('/', request.url), {
             headers: {
               Cookie: cookieStore.toString(),
             },
           });
         }
-         if (pathname === '/profile' || pathname === '/notes') {
+         if (pathname.startsWith('/profile/:path*') || pathname.startsWith('/notes/:path*')) {
           return NextResponse.next({
             headers: {
               Cookie: cookieStore.toString(),
@@ -48,17 +48,17 @@ export async function proxy(request: NextRequest) {
         }
       }
     }
-    if (pathname === '/sign-in' || pathname === '/sign-up') {
+    if (pathname.startsWith('/sign-in') || pathname.startsWith('/sign-up')) {
       return NextResponse.next();
     }
-    if (pathname === '/profile') {
+    if (pathname.startsWith('/profile/:path*') || pathname.startsWith('/notes/:path*')) {
       return NextResponse.redirect(new URL('/sign-in', request.url));
     }
   }
-  if (pathname === '/sign-in' || pathname === '/sign-up') {
+  if (pathname.startsWith('/sign-in') || pathname.startsWith('/sign-up')) {
     return NextResponse.redirect(new URL('/', request.url));
   }
-   if (pathname === '/profile' || pathname === '/notes') {
+   if (pathname.startsWith('/profile/:path*') || pathname.startsWith('/notes/:path*')) {
     return NextResponse.next();
   }
 }
